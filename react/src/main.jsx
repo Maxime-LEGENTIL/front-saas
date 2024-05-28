@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+//import App from './App.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './max.css'
 
@@ -20,6 +20,14 @@ import LatestProduct from './components/Product/LatestProduct';
 
 import Button from 'react-bootstrap/Button';
 import ProductEdit from './components/Product/ProductEdit.jsx';
+import Home from './components/Home/Home.jsx';
+
+import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import CustomerCreate from './components/Customer/CustomerCreate.jsx';
+import CustomerList from './components/Customer/CustomerList.jsx';
+import Footer from './components/Menu/Footer.jsx';
+
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -29,58 +37,10 @@ const router = createBrowserRouter([
                 <Container className='mt-5 p-2'>
                     <HomeAlert />
                 </Container>
-                <Container>
-                    <Row>
-                        <Col>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                                <RapidMenu text={'Créer client'} />
-                                <RapidMenu text={'Modifier client'} />
-                                <RapidMenu text={'Créer commande'} />
-                                <RapidMenu text={'Modifier commande'} />
-                            </div>
-                            <div className='pt-3' style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                                <RapidMenu text={'Créer produit'} />
-                                <RapidMenu text={'Modifier produit'} />
-                                <RapidMenu text={'Catalogue'} />
-                                <RapidMenu text={'Clients'} />
-                            </div>
-                            <div className='pt-3' style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                                <RapidMenu text={'Commandes'} />
-                            </div>
-                        </Col>
-                        <Col style={{backgroundColor: 'white'}}>
-                            <div id='title' className='p-5' style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                                <span><h3>Dernière commande</h3></span>
-                                <span><h6>Voir tout</h6></span>
-                            </div>
-                            <div id='body' className='bg-blue p-4 mb-5 border' style={{ backgroundColor: '#11104b', color: 'white' }}>
-                                <div>
-                                    <h2>Bijoux Bordeaux</h2>
-                                </div>
-                                <div className='pt-3' style={{ display: 'flex', justifyContent: 'space-between'}}>
-                                    <span><h4>Montant</h4></span>
-                                    <span><h4>2.639€ TTC</h4></span>
-                                </div>
-                                <hr />
-                                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                                    <span><h5>N°</h5></span>
-                                    <span><h6>65980516</h6></span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                                    <span><h5>Statut</h5></span>
-                                    <span><h6>En cours de signature</h6></span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                                    <span><h5>Date</h5></span>
-                                    <span><h6>28/05/2024</h6></span>
-                                </div>
-                                <div className='text-center'>
-                                    <Button variant='light'>Voir la commande</Button>
-                                </div>
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
+                
+                <Home />
+
+                <Footer />
             </div>
         ),
     },
@@ -88,32 +48,69 @@ const router = createBrowserRouter([
         path: "products/create",
         element: <div>
             <Header />
-                <Container className='mt-5 p-2'>
-                    <HomeAlert />
-                </Container>
-                <Container>
-                    <Row>
-                        <hr />
-                        <h1 class='pt-3 pb-3'>Créer un nouveau produit</h1>
-                        <ProductCreate />
-                    </Row>
-                </Container>
+            <Container className='mt-5 p-2'>
+                <HomeAlert />
+            </Container>
+            <Container>
+                <Row>
+                    <hr />
+
+                    <h1 class='pt-3 pb-3'>Créer un nouveau produit</h1>
+                    <ProductCreate />
+                </Row>
+            </Container>
+            <Footer />
         </div>,
     },
     {
         path: "products/edit",
         element: <div>
             <Header />
-                <Container className='mt-5 p-2'>
-                    <HomeAlert />
-                </Container>
-                <Container>
-                    <Row>
-                        <hr />
-                        <h1 class='pt-3 pb-3'>Modifier un produit</h1>
-                        <ProductEdit />
-                    </Row>
-                </Container>
+            <Container className='mt-5 p-2'>
+                <HomeAlert />
+            </Container>
+            <Container>
+                <Row>
+                    <hr />
+                    <h1 class='pt-3 pb-3'>Modifier un produit</h1>
+                    <ProductEdit />
+                </Row>
+            </Container>
+            <Footer />
+        </div>,
+    },
+    {
+        path: "customers",
+        element: <div>
+            <Header />
+            <Container className='mt-5 p-2'>
+                <HomeAlert />
+            </Container>
+            <Container>
+                <Row>
+                    <hr />
+                    <CustomerList />
+                </Row>
+            </Container>
+            <Footer />
+        </div>,
+    },
+    {
+        path: "customers/create",
+        element: <div>
+            <Header />
+            <Container className='mt-5 p-2'>
+                <HomeAlert />
+            </Container>
+            <Container>
+                <Row>
+                    <hr />
+
+                    <h1 class='pt-3 pb-3'>Créer un nouveau client</h1>
+                    <CustomerCreate />
+                </Row>
+            </Container>
+            <Footer />
         </div>,
     },
 ]);

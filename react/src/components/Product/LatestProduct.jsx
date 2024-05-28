@@ -1,15 +1,21 @@
+import React, { useRef, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
-function LatestProduct() {
+function LatestProduct({image}) {
     return (
-        <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="https://img.freepik.com/vecteurs-libre/composition-seau-peinture-realiste-metallique-couvercle-seau-plastique-blanc-illustration-peinture-rouge_1284-29319.jpg?size=338&ext=jpg&ga=GA1.1.44546679.1716595200&semt=ais_user" />
+        <div>
+
+        <Card style={{ width: '15rem', height: '25rem' }}>
+            <Card.Img variant="top" src={image} />
             <Card.Body className='text-center'>
                 <Card.Title>Pot de peinture 20L blanc</Card.Title>
-                <Button variant="primary">Voir le produit</Button>
+                <div className='pt-2'>
+                    <Button variant="primary">Voir le produit</Button>
+                </div>
             </Card.Body>
         </Card>
+        </div>
     );
 }
 

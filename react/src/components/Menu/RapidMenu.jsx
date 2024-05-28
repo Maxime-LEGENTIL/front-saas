@@ -11,61 +11,67 @@ import AutoAwesomeMotionOutlinedIcon from '@mui/icons-material/AutoAwesomeMotion
 import MuseumOutlinedIcon from '@mui/icons-material/MuseumOutlined'; // Modifier commande
 import { Link } from 'react-router-dom';
 
-function RapidMenu({text}) {
+function RapidMenu({ text }) {
+    const getIcon = () => {
+        switch (text) {
+            case "Créer client":
+                return <PersonAddOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
+            case "Créer produit":
+                return <AddShoppingCartOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
+            case "Créer commande":
+                return <AddBusinessOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
+            case "Liste clients":
+                return <Person2OutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
+            case "Liste commandes":
+                return <InventoryOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
+            case "Liste produits":
+                return <AutoAwesomeMotionOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
+            case "Modifier client":
+                return <ManageAccountsOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
+            case "Modifier produit":
+                return <ShoppingCartOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
+            case "Modifier commande":
+                return <MuseumOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
+            default:
+                return null;
+        }
+    };
+
+    const getLink = () => {
+        switch (text) {
+            case "Créer client":
+                return "/customers/create";
+            case "Créer produit":
+                return "/products/create";
+            case "Créer commande":
+                return "#";
+            case "Liste clients":
+                return "/customers";
+            case "Liste commandes":
+                return "#";
+            case "Liste produits":
+                return "#";
+            case "Modifier client":
+                return "#";
+            case "Modifier produit":
+                return "#";
+            case "Modifier commande":
+                return "#";
+            default:
+                return "/";
+        }
+    };
+
     return (
         <div>
-            
-            <Button variant="light" className="bg-white p-2 d-flex flex-column align-items-center" style={{width: '105px', height: '105px'}}>
-                {text === "Créer client" && (
-                    <>
-                        <PersonAddOutlinedIcon style={{color: 'orange', fontSize: '2rem'}} />
-                    </>
-                )}
-                {text === "Créer produit" && (
-                    <>
-                        <AddShoppingCartOutlinedIcon style={{color: 'orange', fontSize: '2rem'}} />
-                    </>
-                )}
-                {text === "Créer commande" && (
-                    <>
-                        <AddBusinessOutlinedIcon style={{color: 'orange', fontSize: '2rem'}} />
-                    </>
-                )}
-                {text === "Clients" && (
-                    <>
-                        <Person2OutlinedIcon style={{color: 'orange', fontSize: '2rem'}} />
-                    </>
-                )}
-                {text === "Commandes" && (
-                    <>
-                        <InventoryOutlinedIcon style={{color: 'orange', fontSize: '2rem'}} />
-                    </>
-                )}
-                {text === "Catalogue" && (
-                    <>
-                        <AutoAwesomeMotionOutlinedIcon style={{color: 'orange', fontSize: '2rem'}} />
-                    </>
-                )}
-                
-                {text === "Modifier client" && (
-                    <>
-                        <ManageAccountsOutlinedIcon style={{color: 'orange', fontSize: '2rem'}} />
-                    </>
-                )}
-                {text === "Modifier produit" && (
-                    <>
-                        <ShoppingCartOutlinedIcon style={{color: 'orange', fontSize: '2rem'}} />
-                    </>
-                )}
-                {text === "Modifier commande" && (
-                    <>
-                        <MuseumOutlinedIcon style={{color: 'orange', fontSize: '2rem'}} />
-                    </>
-                )}
-                <div style={{marginTop: '5px'}}>
-                    {text}
-                </div>
-            </Button>
+            <Link to={getLink()} style={{ textDecoration: 'none' }}>
+                <Button variant="light" className="bg-white p-2 d-flex flex-column align-items-center" style={{ width: '135px', height: '100px' }}>
+                    {getIcon()}
+                    <div style={{ marginTop: '5px' }}>
+                        {text}
+                    </div>
+                </Button>
+            </Link>
         </div>
     );
 }

@@ -5,23 +5,25 @@ import Row from 'react-bootstrap/Row';
 
 function ProductCreate() {
     return (
-    <Form>
-        <Row>
-            <Form.Group as={Col}>
-                <Form.Label>Nom du produit</Form.Label>
-                <Form.Control placeholder="Pot de peinture blanc 20L" />
-            </Form.Group>
+        <div>
+            <Form>
+                <Row>
+                    <Form.Group as={Col}>
+                        <Form.Label>Nom du produit</Form.Label>
+                        <Form.Control placeholder="Pot de peinture blanc 20L" />
+                    </Form.Group>
 
-            <Form.Group as={Col}>
-                <Form.Label>Prix du produit (€)</Form.Label>
-                <Form.Control placeholder="50" />
-            </Form.Group>
-        </Row>
+                    <Form.Group as={Col}>
+                        <Form.Label>Prix du produit (€)</Form.Label>
+                        <Form.Control placeholder="50" />
+                    </Form.Group>
+                </Row>
 
-        <Button variant="primary" type="submit">
-            Ajouter le produit
-        </Button>
-    </Form>
+                <Button className='mt-5' variant="primary" type="submit">
+                    Ajouter le produit
+                </Button>
+            </Form>
+        </div>
   );
 }
 
