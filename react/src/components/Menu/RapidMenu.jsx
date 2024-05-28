@@ -9,10 +9,12 @@ import AddBusinessOutlinedIcon from '@mui/icons-material/AddBusinessOutlined'; /
 import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined'; // Liste commande
 import AutoAwesomeMotionOutlinedIcon from '@mui/icons-material/AutoAwesomeMotionOutlined'; // Catalogue
 import MuseumOutlinedIcon from '@mui/icons-material/MuseumOutlined'; // Modifier commande
+import { Link } from 'react-router-dom';
 
 function RapidMenu({text}) {
     return (
         <div>
+            
             <Button variant="light" className="bg-white p-2 d-flex flex-column align-items-center" style={{width: '105px', height: '105px'}}>
                 {text === "Créer client" && (
                     <>
