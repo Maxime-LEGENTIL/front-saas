@@ -76,27 +76,25 @@ function CustomerList() {
                         <Table striped bordered hover className='mt-3'>
                             <thead>
                                 <tr>
+                                    <th>Modifier</th>
                                     <th>ID</th>
                                     <th>Prénom</th>
                                     <th>Nom de famille</th>
                                     <th>Email</th>
                                     <th>Numéro de téléphone</th>
                                     <th>Adresse</th>
-                                    <th>Modifier</th>
-                                    <th>Supprimer</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {filteredCustomers.map(customer => (
                                     <tr key={customer.id}>
+                                        <td><Link to={`../customers/edit/${customer.id}`}><Button variant="warning">Modifier</Button></Link></td>
                                         <td>{customer.id}</td>
                                         <td>{customer.firstname}</td>
                                         <td>{customer.lastname}</td>
                                         <td>{customer.email}</td>
                                         <td>{customer.phonenumber}</td>
                                         <td>{customer.address}</td>
-                                        <td><Link to={`../customers/edit/${customer.id}`}><Button variant="warning">Modifier</Button></Link></td>
-                                        <td><Button variant="danger">Supprimer</Button></td>
                                     </tr>
                                 ))}
                             </tbody>

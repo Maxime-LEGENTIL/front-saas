@@ -1,7 +1,7 @@
 import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
-import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function CustomerCreate() {
     const [firstname, setFirstname] = useState('');
@@ -156,6 +156,7 @@ function CustomerCreate() {
                     <h1 className='pt-3 pb-3'>Créer un nouveau client</h1>
                     <Form>
                         <Row>
+                            <h4 className='pb-3'>Informations personnelles</h4>
                             <Form.Group as={Col} controlId="formFirstname">
                                 <Form.Label>Prénom du client</Form.Label>
                                 <Form.Control
@@ -180,6 +181,20 @@ function CustomerCreate() {
                                 </Form.Control.Feedback>
                             </Form.Group>
                         </Row>
+
+                        <Form.Group className='pt-3' controlId="formAddress">
+                            <Form.Label>Adresse du client</Form.Label>
+                            <Form.Control
+                                onChange={onChangeAddress}
+                                placeholder="5 Impasse des mouettes 17290 Aigrefeuille d'Aunis"
+                                isInvalid={!!errors.address}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.address}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <h4 className='pt-5'>Informations de contact</h4>
 
                         <Form.Group className='pt-3' controlId="formEmail">
                             <Form.Label>Email du client</Form.Label>
@@ -207,20 +222,8 @@ function CustomerCreate() {
                             </Form.Control.Feedback>
                         </Form.Group>
 
-                        <Form.Group className='pt-3' controlId="formAddress">
-                            <Form.Label>Adresse du client</Form.Label>
-                            <Form.Control
-                                onChange={onChangeAddress}
-                                placeholder="5 Impasse des mouettes 17290 Aigrefeuille d'Aunis"
-                                isInvalid={!!errors.address}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.address}
-                            </Form.Control.Feedback>
-                        </Form.Group>
-
                         <Button onClick={handleShow} className='mt-5' variant="primary">
-                            Ajouter le client
+                            Créer client
                         </Button>
                     </Form>
                 </Row>

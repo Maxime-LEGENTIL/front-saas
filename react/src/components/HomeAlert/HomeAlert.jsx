@@ -9,7 +9,7 @@ function HomeAlert() {
     if (show) {
         return (
         <Alert variant="light" onClose={() => setShow(false)} dismissible>
-            <span><AddAlertOutlinedIcon></AddAlertOutlinedIcon> Hiboo CRM est en version 1.0</span>
+            <span><AddAlertOutlinedIcon></AddAlertOutlinedIcon> Hiboo CRM est en version 1.0 ✅</span>
         </Alert>
         );
     }

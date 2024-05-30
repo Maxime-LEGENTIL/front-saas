@@ -1,43 +1,48 @@
-import React, { useState } from 'react';
-import Table from 'react-bootstrap/Table';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import { Container, Row, Col } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Table, Form, Button, Container, Row, Spinner } from 'react-bootstrap'; // Utilisation directe des composants de React-Bootstrap
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 function ProductList() {
     const [searchTerm, setSearchTerm] = useState('');
-    const [customers] = useState([
-        { id: 1, name: 'Rolex Gama M24', price: '599' },
-        { id: 2, name: 'Omega Seamaster', price: '450' },
-        { id: 3, name: 'Tag Heuer Carrera', price: '799' },
-        { id: 4, name: 'Breitling Navitimer', price: '1050' },
-        { id: 5, name: 'Cartier Tank', price: '950' },
-        { id: 6, name: 'Audemars Piguet Royal Oak', price: '1250' },
-        { id: 7, name: 'Patek Philippe Nautilus', price: '1350' },
-        { id: 8, name: 'Hublot Big Bang', price: '1150' },
-        { id: 9, name: 'IWC Portugieser', price: '1100' },
-        { id: 10, name: 'Panerai Luminor', price: '900' },
-        { id: 11, name: 'Longines Master Collection', price: '750' },
-        { id: 12, name: 'Tissot Le Locle', price: '650' },
-        { id: 13, name: 'Seiko Prospex', price: '550' },
-        { id: 14, name: 'Citizen Eco-Drive', price: '350' },
-        { id: 15, name: 'Hamilton Khaki Field', price: '500' },
-        { id: 16, name: 'Bulova Precisionist', price: '450' },
-        { id: 17, name: 'Casio G-Shock', price: '200' },
-        { id: 18, name: 'Fossil Grant', price: '175' },
-        { id: 19, name: 'Swatch Irony', price: '150' },
-        { id: 20, name: 'Michael Kors Lexington', price: '275' }
-        // Ajoutez d'autres clients ici
-    ]);
+    const [products, setProducts] = useState([]);
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchProducts() {
+            try {
+                const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
+                    username: 'admin@admin.com',
+                    password: 'admin'
+                });
+
+                const token = loginResponse.data.token;
+                const config = {
+                    headers: { Authorization: `Bearer ${token}` }
+                };
+
+                const productResponse = await axios.get('http://localhost:8000/api/products', config);
+
+                setProducts(productResponse.data);
+            } catch (error) {
+                setError('Error fetching products: ' + error.message);
+                console.error('Error:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        fetchProducts();
+    }, []);
 
     const handleSearch = event => {
         setSearchTerm(event.target.value);
     };
 
-    const filteredCustomers = customers.filter(customer =>
-        customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        customer.price.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredProducts = products.filter(product =>
+        (product.name && product.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (product.price && product.price.toString().includes(searchTerm))
     );
 
     return (
@@ -53,28 +58,36 @@ function ProductList() {
                         value={searchTerm}
                         onChange={handleSearch}
                     />
-                    <Table striped bordered hover className='mt-3'>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nom du produit</th>
-                                <th>Prix</th>
-                                <th>Modifier</th>
-                                <th>Supprimer</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredCustomers.map(customer => (
-                                <tr key={customer.id}>
-                                    <td>{customer.id}</td>
-                                    <td>{customer.name}</td>
-                                    <td>{customer.price}</td>
-                                    <td><Link to="../products/edit/id"><Button variant="warning">Modifier</Button></Link></td>
-                                    <td><Button variant="danger">Supprimer</Button></td>
+                    {error && <p className="text-danger">{error}</p>}
+                    {isLoading ? (
+                        <div className="text-center pt-3">
+                            <Spinner animation="border" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </Spinner>
+                            <p>Chargement des données en cours...</p>
+                        </div>
+                    ) : (
+                        <Table striped bordered hover className='mt-3'>
+                            <thead>
+                                <tr>
+                                    <th>Modifier</th>
+                                    <th>ID</th>
+                                    <th>Nom du produit</th>
+                                    <th>Prix du produit</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </Table>
+                            </thead>
+                            <tbody>
+                                {filteredProducts.map(product => (
+                                    <tr key={product.id}>
+                                        <td><Link to={`../products/edit/${product.id}`}><Button variant="warning">Modifier</Button></Link></td>
+                                        <td>{product.id}</td>
+                                        <td>{product.name}</td>
+                                        <td>{product.price}€</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    )}
                 </Row>
             </Container>
         </div>

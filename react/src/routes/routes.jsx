@@ -60,7 +60,7 @@ const router = createBrowserRouter([
         </div>,
     },
     {
-        path: "products/edit/id",
+        path: "products/edit/:id",
         element: <div>
             <PageLayout>
                 <ProductEdit />
