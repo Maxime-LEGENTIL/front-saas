@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import Chart from 'chart.js/auto';
 import { getRelativePosition } from 'chart.js/helpers';
 
-function ChartJS() {
+function ChartJS({ id, type, borderColor }) {
     const chartRef = useRef(null);
 
     useEffect(() => {
@@ -12,15 +12,15 @@ function ChartJS() {
             labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
             datasets: [{
                 label: 'Nouveaux clients',
-                data: [0, 30, 50, 75, 150, 85, 77, 120, 187, 85, 153, 238],
+                data: [20, 30, 50, 75, 150, 85, 77, 120, 187, 85, 153, 950],
                 fill: false,
-                borderColor: 'rgb(75, 192, 192)',
+                borderColor: {borderColor},
                 tension: 0.1
             }]
         };
 
         const chart = new Chart(ctx, {
-            type: 'line',
+            type: type,
             data: data,
             options: {
                 onClick: (e) => {
@@ -37,11 +37,11 @@ function ChartJS() {
         return () => {
             chart.destroy();
         };
-    }, []);
+    }, [type]);
 
     return (
         <div>
-            <canvas ref={chartRef}></canvas>
+            <canvas id={id} ref={chartRef}></canvas>
         </div>
     );
 }

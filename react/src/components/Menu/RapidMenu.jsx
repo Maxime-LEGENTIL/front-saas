@@ -41,22 +41,16 @@ function RapidMenu({ text }) {
         switch (text) {
             case "Créer client":
                 return "/customers/create";
+            case "Modifier client":
+                return "/customers";
             case "Créer produit":
                 return "/products/create";
-            case "Créer commande":
-                return "#";
-            case "Liste clients":
-                return "/customers";
-            case "Liste commandes":
-                return "#";
-            case "Liste produits":
-                return "#";
-            case "Modifier client":
-                return "#";
             case "Modifier produit":
-                return "#";
+                return "/products";
+            case "Créer commande":
+                return "/orders/create";
             case "Modifier commande":
-                return "#";
+                return "/orders";
             default:
                 return "/";
         }
