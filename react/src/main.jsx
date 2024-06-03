@@ -9,9 +9,14 @@ import { RouterProvider } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.css'
 
+// Auth 
+import Auth from './services/Auth.jsx';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <RouterProvider router={routes} />
-        {/*<App />*/}
+        <Auth>
+            <RouterProvider router={routes} />
+            {/*<App />*/}
+        </Auth>
     </React.StrictMode>,
 )

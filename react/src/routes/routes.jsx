@@ -19,10 +19,12 @@ import OrderCreate from "../components/Order/OrderCreate";
 import OrderList from "../components/Order/OrderList";
 import OrderEdit from "../components/Order/OrderEdit";
 import OrderShow from "../components/Order/OrderShow";
+import Login from "../components/Login/Login";
+import Logout from "../components/Logout/Logout";
 
 {/* Children va contenir un component : exemple <Home /> etc */}
 const PageLayout = ({ children }) => (
-    <div>
+    <div className="dark-theme">
         <Header />
             <Container className='mt-5 p-2'>
                 <HomeAlert />
@@ -39,6 +41,26 @@ const router = createBrowserRouter([
             <div>
                 <PageLayout>
                     <Home />
+                </PageLayout>
+            </div>
+        ),
+    },
+    {
+        path: "login",
+        element: (
+            <div>
+                <PageLayout>
+                    <Login />
+                </PageLayout>
+            </div>
+        ),
+    },
+    {
+        path: "logout",
+        element: (
+            <div>
+                <PageLayout>
+                    <Logout />
                 </PageLayout>
             </div>
         ),
@@ -116,7 +138,7 @@ const router = createBrowserRouter([
         </div>,
     },
     {
-        path: "orders/edit/id",
+        path: "orders/edit/:id",
         element: <div>
             <PageLayout>
                 <OrderEdit />

@@ -9,11 +9,27 @@ import ChartJS from './ChartJS';
 
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, InputGroup, FormControl } from 'react-bootstrap';
 import OrderShow from '../Order/OrderShow';
 
+import { useAuth } from '../../services/Auth';
+import { useEffect } from 'react';
+
 export default function Home() {
+
+    const { user, token, logout } = useAuth();
+    const navigate = useNavigate();
+
+    console.log(user);
+
+    useEffect(() => {
+        if(user === null) {
+            navigate('/login')
+        }
+    }, [user, navigate])
+
+
     return (
         <div>
             <Container>
@@ -74,7 +90,7 @@ export default function Home() {
                             <span><h6><Link to="">Voir tout <RemoveRedEyeOutlinedIcon></RemoveRedEyeOutlinedIcon></Link></h6></span>
                         </div>
 
-                       {/* <Row>
+                    {/* <Row>
                             <Col className='pt-5' style={{display: 'flex', justifyContent: 'space-between'}}>
                                 <LatestProduct image='https://img.freepik.com/photos-gratuite/montre-elegante-chaine-argent-or-isolee_181624-27080.jpg'/>
                                 <LatestProduct image='https://img.freepik.com/photos-gratuite/montre-doree-elegante-surface-blanche_181624-27078.jpg?size=626&ext=jpg&ga=GA1.1.44546679.1716508800&semt=ais_user'/>
