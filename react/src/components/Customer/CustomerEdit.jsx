@@ -176,7 +176,7 @@ function CustomerEdit() {
                                 </Alert>
                             )}
 
-                            <h1 className="pt-3">Modifier client n°{id}</h1>
+                            <h1 className="pt-3">Modifier {firstname} {lastname}</h1>
                             <h4 className='pb-3'>Informations personnelles</h4>
                             <Form onSubmit={onSubmitForm}>
                                 <Row>

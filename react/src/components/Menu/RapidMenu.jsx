@@ -33,7 +33,7 @@ function RapidMenu({ text }) {
             case "Modifier commande":
                 return <MuseumOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
             default:
-                return null;
+                return <PersonAddOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
         }
     };
 

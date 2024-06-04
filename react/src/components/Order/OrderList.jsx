@@ -47,6 +47,14 @@ function OrderList() {
         (order.orderNumber && order.orderNumber.toString().toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
     return (
         <div>
             <Container>
@@ -77,6 +85,8 @@ function OrderList() {
                                         <th>ID</th>
                                         <th>Numéro de commande</th>
                                         <th>Montant de la commande</th>
+                                        <th>Date de création</th>
+                                        <th>Date de mise à jour</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -86,6 +96,8 @@ function OrderList() {
                                             <td>{order.id}</td>
                                             <td>{order.orderNumber}</td>
                                             <td>{order.totalAmount}€</td>
+                                            <td>{formatDate(order.createdAt)}</td>
+                                            <td>{order.updatedAt ? formatDate(order.createdAt) : '-'}</td>
                                         </tr>
                                     ))}
                                 </tbody>

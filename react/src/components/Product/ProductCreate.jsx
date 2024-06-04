@@ -144,7 +144,7 @@ function ProductCreate() {
                             />
                         </Form.Group>
 
-                        <Button onClick={handleShow} className='mt-5' variant="primary">
+                        <Button onClick={handleShow} className='mt-5' variant="success">
                             Créer produit
                         </Button>
                     </Form>

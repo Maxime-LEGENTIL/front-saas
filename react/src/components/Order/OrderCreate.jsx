@@ -11,6 +11,7 @@ function OrderCreate() {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [orderName, setOrderName] = useState('');
 
     useEffect(() => {
         async function fetchProductsAndCustomers() {
@@ -93,6 +94,7 @@ function OrderCreate() {
             };*/
             // Ajoutez la clé "quantity" pour chaque produit sélectionné dans le payload de la commande
             const orderPayload = {
+                name: orderName,
                 orderNumber: Math.floor(Math.random() * 1000000000),
                 totalAmount: parseInt(calculateTotalAmount()),
                 products: orderProducts.map(product => ({
@@ -138,6 +140,10 @@ function OrderCreate() {
         })
     };
 
+    const onChangeName = (e) => {
+        setOrderName(e.target.value)
+    }
+
     return (
         <div>
             <Container>
@@ -145,10 +151,19 @@ function OrderCreate() {
                     <hr />
                     <h1 className='pt-3 pb-3'>Créer une commande</h1>
 
-                    <h6 className='pb-5'>Vous allez devoir associer un client à cette commande ainsi qu'un ou plusieurs produit(s).</h6>
+                    <h6 className=''>Vous allez devoir associer un client à cette commande ainsi qu'un ou plusieurs produit(s).</h6>
 
+                    <Form onSubmit={onSubmitForm} className='pt-2 pb-2'>
+                        <Form.Group>
+                            <Form.Label>Nom de la commande</Form.Label>
+                            <Form.Control
+                                placeholder="Exemple: Bijoux Bordeaux"
+                                onChange={onChangeName}
+                                
+                                required
+                                />
+                        </Form.Group>
                     <hr />
-                    <Form onSubmit={onSubmitForm} className='pt-3'>
                         <Form.Group>
                             <Form.Label>Choisissez un client</Form.Label>
                             <Select

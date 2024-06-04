@@ -45,6 +45,14 @@ function ProductList() {
         (product.price && product.price.toString().includes(searchTerm))
     );
 
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
     return (
         <div>
             <Container>
@@ -74,6 +82,8 @@ function ProductList() {
                                     <th>ID</th>
                                     <th>Nom du produit</th>
                                     <th>Prix du produit</th>
+                                    <th>Date de création</th>
+                                    <th>Date de mise à jour</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -83,6 +93,8 @@ function ProductList() {
                                         <td>{product.id}</td>
                                         <td>{product.name}</td>
                                         <td>{product.price}€</td>
+                                        <td>{formatDate(product.createdAt)}</td>
+                                        <td>{product.updatedAt ? formatDate(product.createdAt) : '-'}</td>
                                     </tr>
                                 ))}
                             </tbody>

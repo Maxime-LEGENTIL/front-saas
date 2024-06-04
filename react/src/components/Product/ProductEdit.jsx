@@ -126,7 +126,7 @@ function ProductEdit() {
                                 </Alert>
                             )}
 
-                            <h1 className="pt-3">Modifier produit n°{id}</h1>
+                            <h1 className="pt-3">Modifier {name}</h1>
                             <h4 className='pb-3'>Informations essentielles</h4>
                             <Form onSubmit={onSubmitForm}>
                                 <Row>

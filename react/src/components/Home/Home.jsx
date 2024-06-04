@@ -14,20 +14,54 @@ import { Card, InputGroup, FormControl } from 'react-bootstrap';
 import OrderShow from '../Order/OrderShow';
 
 import { useAuth } from '../../services/Auth';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import axios from 'axios'
+import OrderPDF from '../Order/OrderPDF';
 
 export default function Home() {
 
     const { user, token, logout } = useAuth();
     const navigate = useNavigate();
 
-    console.log(user);
+   // console.log(user);
 
-    useEffect(() => {
+    /*useEffect(() => {
         if(user === null) {
             navigate('/login')
         }
     }, [user, navigate])
+*/
+    const [isLoading, setIsLoading] = useState('');
+    const [lastOrder, setLastOrder] = useState('');
+    const [error, setError] = useState({})
+
+    useEffect(() => {
+        async function fetchLastOrder() {
+            try {
+                const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
+                    username: 'admin@admin.com',
+                    password: 'admin'
+                });
+
+                const token = loginResponse.data.token;
+                const config = {
+                    headers: { Authorization: `Bearer ${token}` }
+                };
+
+                const orderResponse = await axios.get('http://localhost:8000/api/orders/last', config);
+
+                setLastOrder(orderResponse.data);
+            } catch (error) {
+                setError('Error fetching customers: ' + error.message);
+                console.error('Error:', error);
+            } finally {
+                setIsLoading(false); // Arrêter le chargement après la récupération des données
+            }
+        }
+
+        fetchLastOrder();
+    }, []); // L'effet se déclenche une seule fois à l'initialisation du composant
 
 
     return (
@@ -44,38 +78,38 @@ export default function Home() {
                         <div className='pt-3' style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
                             <RapidMenu text={'Créer commande'} />
                             <RapidMenu text={'Modifier commande'} />
-                            <RapidMenu text={'dddd'} />
-                            <RapidMenu text={'dddd'} />
+                            <RapidMenu text={'###'} />
+                            <RapidMenu text={'###'} />
                         </div>
                     </Col>
                     <Col style={{backgroundColor: 'white', borderRadius: '10px'}}>
                         <div id='title' className='p-5' style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
                             <span><h3>Dernière commande</h3></span>
-                            <span><h6><Link to="">Voir tout <RemoveRedEyeOutlinedIcon></RemoveRedEyeOutlinedIcon></Link></h6></span>
+                            <span><h6><Link to="/orders">Voir tout <RemoveRedEyeOutlinedIcon></RemoveRedEyeOutlinedIcon></Link></h6></span>
                         </div>
                         <div id='body' className='bg-blue p-4 mb-5 border' style={{ backgroundColor: '#11104b', color: 'white', borderRadius: '8px' }}>
                             <div>
-                                <h2>Bijoux Bordeaux</h2>
+                                <h2>{lastOrder.name}</h2>
                             </div>
                             <div className='pt-3' style={{ display: 'flex', justifyContent: 'space-between'}}>
                                 <span><h4>Montant</h4></span>
-                                <span><h4>2.639€ TTC</h4></span>
+                                <span><h4>{lastOrder.totalAmount}€ TTC</h4></span>
                             </div>
                             <hr />
                             <div style={{ display: 'flex', justifyContent: 'space-between'}}>
                                 <span><h5>N°</h5></span>
-                                <span><h6>65980516</h6></span>
+                                <span><h6>{lastOrder.orderNumber}</h6></span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between'}}>
                                 <span><h5>Statut</h5></span>
-                                <span><h6>En cours de signature</h6></span>
+                                <span><h6>-</h6></span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between'}}>
                                 <span><h5>Date</h5></span>
-                                <span><h6>28/05/2024</h6></span>
+                                <span><h6>-</h6></span>
                             </div>
                             <div className='text-center'>
-                                <Link to="orders/id">
+                                <Link to="orders/edit/"{...lastOrder.id}>
                                     <Button variant='light'>Voir la commande</Button>
                                 </Link>
                             </div>

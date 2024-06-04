@@ -222,7 +222,7 @@ function CustomerCreate() {
                             </Form.Control.Feedback>
                         </Form.Group>
 
-                        <Button onClick={handleShow} className='mt-5' variant="primary">
+                        <Button onClick={handleShow} className='mt-5' variant="success">
                             Créer client
                         </Button>
                     </Form>
