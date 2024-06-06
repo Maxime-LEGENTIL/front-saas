@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { Container, Row, Col, Spinner } from 'react-bootstrap'; // Importer Spinner
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../../services/Auth';
 
 function CustomerList() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -12,15 +13,11 @@ function CustomerList() {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true); // État pour le chargement
 
+    const { user, token } = useAuth()
+
     useEffect(() => {
         async function fetchCustomers() {
             try {
-                const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                    username: 'admin@admin.com',
-                    password: 'admin'
-                });
-
-                const token = loginResponse.data.token;
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
@@ -88,7 +85,7 @@ function CustomerList() {
                             <tbody>
                                 {filteredCustomers.map(customer => (
                                     <tr key={customer.id}>
-                                        <td><Link to={`../customers/edit/${customer.id}`}><Button variant="warning">Modifier</Button></Link></td>
+                                        <td><Link to={`../customers/edit/${customer.id}`}><Button variant="outline-info">Modifier</Button></Link></td>
                                         <td>{customer.id}</td>
                                         <td>{customer.firstname}</td>
                                         <td>{customer.lastname}</td>

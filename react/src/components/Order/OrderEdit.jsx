@@ -45,6 +45,7 @@ function OrderEdit() {
 
         async function fetchOrderDetails() {
             try {
+                // Connexion et obtention du token d'authentification
                 const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
                     username: 'admin@admin.com',
                     password: 'admin'
@@ -55,33 +56,39 @@ function OrderEdit() {
                     headers: { Authorization: `Bearer ${token}` }
                 };
         
+                // Récupération des détails de la commande
                 const orderResponse = await axios.get('http://localhost:8000/api/orders/' + id, config);
                 const orderData = orderResponse.data;
         
-                console.log(orderData.customer)
+                console.log("[useEffect] Response /api/orders/id", orderData);
         
                 if (orderData.customer && orderData.orderProducts) {
-                    setSelectedCustomer({ value: orderData.customer.id, label: `${orderData.customer.firstname} ${orderData.customer.lastname}` });
+                    // Définir le client sélectionné
+                    setSelectedCustomer({ 
+                        value: orderData.customer.id, 
+                        label: `${orderData.customer.firstname} ${orderData.customer.lastname}` 
+                    });
                     
-                    // Mise à jour de orderProducts pour inclure le nom et le prix des produits
+                    // Mettre à jour orderProducts pour inclure le nom et le prix des produits
                     setOrderProducts(orderData.orderProducts.map(orderProduct => ({
-                        productId: orderProduct.id,
-                        name: orderProduct.product.name, // Accédez au nom du produit à partir de orderProduct.product.name
-                        price: orderProduct.product.price, // Accédez au prix du produit à partir de orderProduct.product.price
+                        productId: orderProduct.product.id, // Corrigé pour utiliser product.id
+                        name: orderProduct.product.name, // Accès au nom du produit
+                        price: orderProduct.product.price, // Accès au prix du produit
                         quantity: orderProduct.quantity
-                    })))
+                    })));
                     
+                    // Définir le nom de la commande
                     setOrderName(orderData.name);
                 } else {
-                    setError('Order details not found.');
+                    setError('Détails de la commande non trouvés.');
                 }
             } catch (error) {
-                setError('Error fetching order details: ' + error.message);
-                console.error('Error:', error);
+                setError('Erreur lors de la récupération des détails de la commande : ' + error.message);
+                console.error('Erreur :', error);
             }
         }
         
-
+        
         fetchProductsAndCustomers();
         fetchOrderDetails();
     }, [id]);
@@ -123,45 +130,50 @@ function OrderEdit() {
 
     async function onSubmitForm(e) {
         e.preventDefault();
-        setIsLoading(true);
+        setIsLoading(true); // Indiquer que le chargement commence
         try {
+            // Connexion et obtention du token d'authentification
             const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
                 username: 'admin@admin.com',
                 password: 'admin'
             });
-
+    
             const token = loginResponse.data.token;
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };
     
+            // Préparer les données de la commande à envoyer
             const orderPayload = {
-                orderNumber: Math.floor(Math.random() * 1000000000),
-                totalAmount: parseInt(calculateTotalAmount()),
+                orderNumber: 2000,
+                totalAmount: 666,
+                name: orderName,
+                customer: { id: selectedCustomer ? selectedCustomer.value : '' },
                 products: orderProducts.map(product => ({
-                    id: product.productId,
-                    quantity: product.quantity
-                })),
-                customer: { id: selectedCustomer ? selectedCustomer.value : '' }
+                    id: product.productId, // Correction pour utiliser productId au lieu de id
+                    quantity: parseInt(product.quantity)
+                }))
             };
-
-            console.log(token)
-            console.log(orderPayload)
     
+            console.log(orderPayload); // Afficher les données de la commande pour vérification
+    
+            // Envoyer la requête PUT pour mettre à jour la commande
             await axios.put('http://localhost:8000/api/orders/' + id, orderPayload, config);
     
+            // Afficher un message de succès
             setShowSuccessMessage(true);
-            setOrderProducts([]);
-            setSelectedCustomer(null);
-            setTimeout(() => setShowSuccessMessage(false), 10000); // Hide the message after 10 seconds
+            setOrderProducts([]); // Réinitialiser les produits de la commande
+            setSelectedCustomer(null); // Réinitialiser le client sélectionné
+            setTimeout(() => setShowSuccessMessage(false), 10000); // Cacher le message après 10 secondes
         } catch (error) {
-            setError('Error updating order: ' + error.message);
-            console.error('Error:', error);
+            setError('Erreur lors de la mise à jour de la commande : ' + error.message);
+            console.error('Erreur :', error);
         } finally {
-            setIsLoading(false);
+            setIsLoading(false); // Indiquer que le chargement est terminé
         }
     }
-
+    
+    
     const customStyles = {
         control: (provided) => ({
             ...provided,

@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+import { useAuth } from '../../services/Auth';
+
 function CustomerCreate() {
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
@@ -21,6 +23,9 @@ function CustomerCreate() {
             setShowModal(true);
         }
     };
+
+    const { user, token } = useAuth()
+
 
     function validateForm() {
         const newErrors = {};
@@ -48,12 +53,6 @@ function CustomerCreate() {
         setIsSubmitting(true);
 
         try {
-            const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                username: 'admin@admin.com',
-                password: 'admin'
-            });
-
-            const token = loginResponse.data.token;
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };

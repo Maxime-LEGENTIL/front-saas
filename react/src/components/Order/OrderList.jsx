@@ -83,6 +83,7 @@ function OrderList() {
                                     <tr>
                                         <th>Modifier</th>
                                         <th>ID</th>
+                                        <th>Nom de la commande</th>
                                         <th>Numéro de commande</th>
                                         <th>Montant de la commande</th>
                                         <th>Date de création</th>
@@ -94,6 +95,7 @@ function OrderList() {
                                         <tr key={order.id}>
                                             <td><Link to={`../orders/edit/${order.id}`}><Button variant="warning">Modifier</Button></Link></td>
                                             <td>{order.id}</td>
+                                            <td>{order.name}</td>
                                             <td>{order.orderNumber}</td>
                                             <td>{order.totalAmount}€</td>
                                             <td>{formatDate(order.createdAt)}</td>

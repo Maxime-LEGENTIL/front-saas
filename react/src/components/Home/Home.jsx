@@ -8,6 +8,7 @@ import LatestProduct from '../Product/LatestProduct';
 import ChartJS from './ChartJS';
 
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+import MovingIcon from '@mui/icons-material/Moving';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, InputGroup, FormControl } from 'react-bootstrap';
@@ -21,7 +22,6 @@ import OrderPDF from '../Order/OrderPDF';
 
 export default function Home() {
 
-    const { user, token, logout } = useAuth();
     const navigate = useNavigate();
 
    // console.log(user);
@@ -36,15 +36,12 @@ export default function Home() {
     const [lastOrder, setLastOrder] = useState('');
     const [error, setError] = useState({})
 
+    const { user, token } = useAuth()
+
+
     useEffect(() => {
         async function fetchLastOrder() {
             try {
-                const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                    username: 'admin@admin.com',
-                    password: 'admin'
-                });
-
-                const token = loginResponse.data.token;
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
@@ -63,6 +60,13 @@ export default function Home() {
         fetchLastOrder();
     }, []); // L'effet se déclenche une seule fois à l'initialisation du composant
 
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
 
     return (
         <div>
@@ -106,10 +110,10 @@ export default function Home() {
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between'}}>
                                 <span><h5>Date</h5></span>
-                                <span><h6>-</h6></span>
+                                <span><h6>{formatDate(lastOrder.createdAt)}</h6></span>
                             </div>
                             <div className='text-center'>
-                                <Link to="orders/edit/"{...lastOrder.id}>
+                                <Link to={`/orders/edit/${lastOrder.id}`}>
                                     <Button variant='light'>Voir la commande</Button>
                                 </Link>
                             </div>
@@ -117,35 +121,35 @@ export default function Home() {
                     </Col>
                 </Row>
 
-                <Row className='mt-5'>
-                    <Col className='p-5' style={{backgroundColor: 'white', borderTopLeftRadius: '15px', borderBottomLeftRadius: '15px'}}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                            <h3>Derniers produits ajoutés</h3>
-                            <span><h6><Link to="">Voir tout <RemoveRedEyeOutlinedIcon></RemoveRedEyeOutlinedIcon></Link></h6></span>
+                <Row className='mt-5' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Col className='p-5' style={{ backgroundColor: 'white', borderRadius: '15px', marginRight: '10px' }}>
+                        <div>
+                            <h3 className='text-center'>Nombre de clients</h3>
                         </div>
-
-                    {/* <Row>
-                            <Col className='pt-5' style={{display: 'flex', justifyContent: 'space-between'}}>
-                                <LatestProduct image='https://img.freepik.com/photos-gratuite/montre-elegante-chaine-argent-or-isolee_181624-27080.jpg'/>
-                                <LatestProduct image='https://img.freepik.com/photos-gratuite/montre-doree-elegante-surface-blanche_181624-27078.jpg?size=626&ext=jpg&ga=GA1.1.44546679.1716508800&semt=ais_user'/>
-                            </Col>
-                        </Row>*/}
                         <div className='pt-5'>
-                            <ChartJS id='1' type='bar' borderColor='black' />
+                            <h3 className='text-center'>137 <MovingIcon></MovingIcon></h3>
                         </div>
                     </Col>
 
-
-                    <Col className='p-5' style={{backgroundColor: 'white', borderTopRightRadius: '15px', borderBottomRightRadius: '15px'}}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                            <h3>Clients enregistrés</h3>
-                            <span><h6><Link to="">Voir tout <RemoveRedEyeOutlinedIcon></RemoveRedEyeOutlinedIcon></Link></h6></span>
+                    <Col className='p-5' style={{ backgroundColor: 'white', borderRadius: '15px', marginRight: '10px' }}>
+                        <div>
+                            <h3 className='text-center'>Nombre de produits</h3>
                         </div>
                         <div className='pt-5'>
-                            <ChartJS id='2' type='line' borderColor='yellow' />
+                            <h3 className='text-center'>850 <MovingIcon></MovingIcon></h3>
+                        </div>
+                    </Col>
+
+                    <Col className='p-5' style={{ backgroundColor: 'white', borderRadius: '15px' }}>
+                        <div>
+                            <h3 className='text-center'>Nombre de commandes</h3>
+                        </div>
+                        <div className='pt-5'>
+                            <h3 className='text-center'>49 <MovingIcon></MovingIcon></h3>
                         </div>
                     </Col>
                 </Row>
+
             </Container>
         </div>
     );

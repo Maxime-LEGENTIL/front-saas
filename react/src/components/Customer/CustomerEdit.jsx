@@ -3,6 +3,7 @@ import { Container, Row, Col, Spinner, Form, Alert } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useAuth } from '../../services/Auth';
 
 function CustomerEdit() {
     const { id } = useParams();
@@ -18,15 +19,17 @@ function CustomerEdit() {
     const [isLoading, setIsLoading] = useState(true);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
+    const { user, token } = useAuth()
+
     useEffect(() => {
         async function fetchCustomer() {
             try {
-                const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
+                /*const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
                     username: 'admin@admin.com',
                     password: 'admin'
                 });
 
-                const token = loginResponse.data.token;
+                const token = loginResponse.data.token;*/
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
