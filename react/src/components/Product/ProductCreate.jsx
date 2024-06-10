@@ -2,6 +2,7 @@ import { Container, Row, Col, Form, Button, Modal, Alert } from 'react-bootstrap
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../../services/Auth';
 
 function ProductCreate() {
     const [name, setName] = useState('');
@@ -11,6 +12,8 @@ function ProductCreate() {
     const [errors, setErrors] = useState({});
     const [serverError, setServerError] = useState(null);
     const navigate = useNavigate();
+
+    const { token } = useAuth()
 
     const handleClose = () => setShowModal(false);
     const handleShow = (e) => {
@@ -35,12 +38,6 @@ function ProductCreate() {
         setIsSubmitting(true);
 
         try {
-            const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                username: 'admin@admin.com',
-                password: 'admin'
-            });
-
-            const token = loginResponse.data.token;
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };

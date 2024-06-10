@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { Container, Row, Spinner } from 'react-bootstrap'; // Importer Spinner
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../../services/Auth';
 
 function OrderList() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -12,15 +13,11 @@ function OrderList() {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true); // État pour le chargement
 
+    const { user, token } = useAuth()
+
     useEffect(() => {
         async function fetchOrders() {
             try {
-                const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                    username: 'admin@admin.com',
-                    password: 'admin'
-                });
-
-                const token = loginResponse.data.token;
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };

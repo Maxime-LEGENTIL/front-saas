@@ -24,12 +24,6 @@ function CustomerEdit() {
     useEffect(() => {
         async function fetchCustomer() {
             try {
-                /*const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                    username: 'admin@admin.com',
-                    password: 'admin'
-                });
-
-                const token = loginResponse.data.token;*/
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
@@ -128,12 +122,6 @@ function CustomerEdit() {
         if (validateForm()) {
             setIsLoading(true);
             try {
-                const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                    username: 'admin@admin.com',
-                    password: 'admin'
-                });
-
-                const token = loginResponse.data.token;
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
@@ -229,6 +217,10 @@ function CustomerEdit() {
                                 <Button className="mt-5" variant="primary" type="submit">
                                     Sauvegarder le client
                                 </Button>
+
+                                {/*<Button className="ms-3 mt-5" variant="warning" type="submit">
+                                    Modifier le client
+                                </Button>*/}
                             </Form>
                         </div>
                     )}

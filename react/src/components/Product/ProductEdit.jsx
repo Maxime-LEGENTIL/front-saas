@@ -3,6 +3,7 @@ import { Container, Row, Col, Spinner, Form, Alert } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useAuth } from '../../services/Auth';
 
 function ProductEdit() {
     const { id } = useParams();
@@ -15,15 +16,11 @@ function ProductEdit() {
     const [isLoading, setIsLoading] = useState(true);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
+    const { token } = useAuth()
+
     useEffect(() => {
         async function fetchProduct() {
             try {
-                const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                    username: 'admin@admin.com',
-                    password: 'admin'
-                });
-
-                const token = loginResponse.data.token;
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
@@ -77,12 +74,6 @@ function ProductEdit() {
         if (validateForm()) {
             setIsLoading(true);
             try {
-                const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                    username: 'admin@admin.com',
-                    password: 'admin'
-                });
-
-                const token = loginResponse.data.token;
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };

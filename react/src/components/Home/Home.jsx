@@ -24,14 +24,6 @@ export default function Home() {
 
     const navigate = useNavigate();
 
-   // console.log(user);
-
-    /*useEffect(() => {
-        if(user === null) {
-            navigate('/login')
-        }
-    }, [user, navigate])
-*/
     const [isLoading, setIsLoading] = useState('');
     const [lastOrder, setLastOrder] = useState('');
     const [error, setError] = useState({})

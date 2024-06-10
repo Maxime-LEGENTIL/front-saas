@@ -6,7 +6,7 @@ import { Container, Row } from 'react-bootstrap';
 
 // Components
 import Header from "../components/Menu/Header";
-import HomeAlert from "../components/HomeAlert/HomeAlert";
+import BreadcrumbAndVersionCRM from "../components/BreadcrumbAndVersionCRM/BreadcrumbAndVersionCRM";
 import Footer from "../components/Menu/Footer";
 import Home from "../components/Home/Home";
 import CustomerList from "../components/Customer/CustomerList";
@@ -27,7 +27,7 @@ const PageLayout = ({ children }) => (
     <div className="dark-theme">
         <Header />
             <Container className='mt-5 p-2'>
-                <HomeAlert />
+                <BreadcrumbAndVersionCRM />
             </Container>
             {children}
         <Footer />

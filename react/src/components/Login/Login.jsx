@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useAuth } from '../../services/Auth';
 import { useNavigate } from 'react-router-dom';
-import ListGroup from 'react-bootstrap/ListGroup';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -31,13 +30,14 @@ export default function Login() {
             });
 
             const token = loginResponse.data.token;
-            console.log(token);
 
             if (token) {
                 // Appeler la fonction login avec les informations de l'utilisateur et le token
                 login({ email }, token);
-                console.log('on call login')
-                navigate('/')
+                console.log('on call login');
+                console.log('Navigating to /');
+                navigate('/');
+                console.log('After navigate');
             }
         } catch (error) {
             setError("L'adresse email ou le mot de passe est incorrect.");
@@ -68,7 +68,7 @@ export default function Login() {
                                     onChange={onChangeEmail}
                                     value={email}
                                     required
-                                    />
+                                />
                             </Form.Group>
 
                             <Form.Group className='mt-3'>
@@ -79,7 +79,7 @@ export default function Login() {
                                     onChange={onChangePassword}
                                     value={password}
                                     required
-                                    />
+                                />
                             </Form.Group>
 
                             <Button className='mt-3 w-100' variant="primary" type="submit">
@@ -92,19 +92,7 @@ export default function Login() {
                         <h1 className='pt-3 pb-3 text-center'>AgriShop</h1>
 
                         <img src="https://media.istockphoto.com/id/177498989/fr/photo/tracteur.jpg?s=612x612&w=0&k=20&c=ujfTPMc4VBGhz0KSElUN9LycQtvqkMpUvOwYGFYY640=" alt="" className='w-100' />
-
-                        {/*<ListGroup className='pt-3'>
-                            <ListGroup.Item>Ne partagez JAMAIS vos identifiants</ListGroup.Item>
-                            <ListGroup.Item>N'ouvrez pas de pièce jointe sans connaître l'expéditeur</ListGroup.Item>
-                            <ListGroup.Item>Utilisez les outils qui vous sont mis à disposition</ListGroup.Item>
-                            <ListGroup.Item>...</ListGroup.Item>
-                            <ListGroup.Item>...</ListGroup.Item>
-                            <ListGroup.Item>...</ListGroup.Item>
-                            <ListGroup.Item>...</ListGroup.Item>
-                            <ListGroup.Item>...</ListGroup.Item>
-                        </ListGroup>*/}
                     </Col>
-                    
                 </Row>
             </Container>
         </div>

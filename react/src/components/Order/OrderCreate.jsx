@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Container, Row, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import Select from 'react-select';
+import { useAuth } from '../../services/Auth';
 
 function OrderCreate() {
     const [customers, setCustomers] = useState([]);
@@ -13,15 +14,11 @@ function OrderCreate() {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [orderName, setOrderName] = useState('');
 
+    const { user, token } = useAuth()
+
     useEffect(() => {
         async function fetchProductsAndCustomers() {
             try {
-                const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                    username: 'admin@admin.com',
-                    password: 'admin'
-                });
-
-                const token = loginResponse.data.token;
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
@@ -75,12 +72,6 @@ function OrderCreate() {
         e.preventDefault();
         setIsLoading(true);
         try {
-            const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                username: 'admin@admin.com',
-                password: 'admin'
-            });
-
-            const token = loginResponse.data.token;
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };

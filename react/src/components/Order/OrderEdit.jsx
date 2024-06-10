@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Container, Row, Form, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import Select from 'react-select';
 import { useParams } from 'react-router-dom';
+import OrderPDF from './OrderPDF';
+import { useAuth } from '../../services/Auth';
 
 function OrderEdit() {
     const [customers, setCustomers] = useState([]);
@@ -14,16 +16,14 @@ function OrderEdit() {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const { id } = useParams(); // Récupère l'id de la commande à partir des paramètres d'URL
     const [orderName, setOrderName] = useState('')
+    const [customerDetails, setCustomerDetails] = useState({});
+    const [orderDetails, setOrderDetails] = useState({})
+    const { user, token } = useAuth()
+
 
     useEffect(() => {
         async function fetchProductsAndCustomers() {
             try {
-                const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                    username: 'admin@admin.com',
-                    password: 'admin'
-                });
-
-                const token = loginResponse.data.token;
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
@@ -46,12 +46,6 @@ function OrderEdit() {
         async function fetchOrderDetails() {
             try {
                 // Connexion et obtention du token d'authentification
-                const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                    username: 'admin@admin.com',
-                    password: 'admin'
-                });
-        
-                const token = loginResponse.data.token;
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
@@ -76,9 +70,25 @@ function OrderEdit() {
                         price: orderProduct.product.price, // Accès au prix du produit
                         quantity: orderProduct.quantity
                     })));
-                    
+
+                    //console.log(orderProducts)
+        
+                    // Stocker les détails du client
+                    setCustomerDetails({
+                        firstname: orderData.customer.firstname,
+                        lastname: orderData.customer.lastname,
+                        address: orderData.customer.address,
+                        email: orderData.customer.email,
+                        phone: orderData.customer.phonenumber
+                    });
+
+
+                    setOrderDetails({
+                        orderNumber: orderData.orderNumber,
+                        name: orderData.name
+                    })
                     // Définir le nom de la commande
-                    setOrderName(orderData.name);
+                    //setOrderName(orderData.name);
                 } else {
                     setError('Détails de la commande non trouvés.');
                 }
@@ -87,6 +97,7 @@ function OrderEdit() {
                 console.error('Erreur :', error);
             }
         }
+        
         
         
         fetchProductsAndCustomers();
@@ -125,20 +136,12 @@ function OrderEdit() {
         const product = orderProducts.find(p => p.productId === productId);
         return product ? { value: product.productId, label: `${product.name} - ${product.price}€` } : null;
     };
-    
-    
 
     async function onSubmitForm(e) {
         e.preventDefault();
         setIsLoading(true); // Indiquer que le chargement commence
         try {
             // Connexion et obtention du token d'authentification
-            const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                username: 'admin@admin.com',
-                password: 'admin'
-            });
-    
-            const token = loginResponse.data.token;
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };
@@ -147,7 +150,7 @@ function OrderEdit() {
             const orderPayload = {
                 orderNumber: 2000,
                 totalAmount: 666,
-                name: orderName,
+                name: orderDetails.name,
                 customer: { id: selectedCustomer ? selectedCustomer.value : '' },
                 products: orderProducts.map(product => ({
                     id: product.productId, // Correction pour utiliser productId au lieu de id
@@ -195,7 +198,7 @@ function OrderEdit() {
             <Container>
                 <Row>
                     <hr />
-                    <h1 className='pt-3 pb-3'>Modifier la commande {orderName}</h1>
+                    <h1 className='pt-3 pb-3'>Modifier la commande {orderDetails.name}</h1>
                     <hr />
                     <Form onSubmit={onSubmitForm} className='pt-3'>
                         <Form.Group>
@@ -263,11 +266,38 @@ function OrderEdit() {
                         <Button className='mt-3' variant="success" type="submit" disabled={isLoading}>
                             {isLoading ? 'Modification...' : 'Modifier commande'}
                         </Button>
+
                     </Form>
                     {showSuccessMessage && <p className="mt-3 text-success">Commande mise à jour avec succès !</p>}
                     {error && <p className="mt-3 text-danger">{error}</p>}
                 </Row>
             </Container>
+
+            <Container className='mt-5'>
+                <Row>
+                    <Col>
+                        <OrderPDF
+                        title="Devis" 
+                        orderNumber={orderDetails.orderNumber} 
+                        orderName={orderDetails.name} 
+                        customerDetails={customerDetails}
+                        orderProducts={orderProducts}
+                        />
+                    </Col>
+                    <Col>
+                        <OrderPDF 
+                        title="Facture"
+                        orderNumber={orderDetails.orderNumber} 
+                        orderName={orderDetails.name} 
+                        customerDetails={customerDetails}
+                        orderProducts={orderProducts}
+                        />
+                    </Col>
+                </Row>
+                
+            </Container>
+            
+
         </div>
     );
 }

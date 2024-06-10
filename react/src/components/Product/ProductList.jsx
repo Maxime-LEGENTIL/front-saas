@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table, Form, Button, Container, Row, Spinner } from 'react-bootstrap'; // Utilisation directe des composants de React-Bootstrap
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../../services/Auth';
 
 function ProductList() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -9,15 +10,11 @@ function ProductList() {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
+    const { token } = useAuth()
+
     useEffect(() => {
         async function fetchProducts() {
             try {
-                const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                    username: 'admin@admin.com',
-                    password: 'admin'
-                });
-
-                const token = loginResponse.data.token;
                 const config = {
                     headers: { Authorization: `Bearer ${token}` }
                 };
