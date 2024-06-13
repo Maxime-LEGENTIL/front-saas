@@ -1,13 +1,13 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from 'react-router-dom';
 import logo from './logo.svg';
 import { useAuth } from '../../services/Auth';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import Person3Icon from '@mui/icons-material/Person3';
 
 function Header() {
     const { user, token, logout } = useAuth();
@@ -48,7 +48,8 @@ function Header() {
 
                     ) : 
                         <>
-                            <Nav.Link><Link to="../login"><LoginIcon></LoginIcon> Se connecter</Link></Nav.Link>
+                            <Nav.Link><Link to="../inscription" className='mt-5 px-4 py-2 rounded-pill' style={{backgroundColor: '#FF4F01', border: 'none', color: 'white'}}><Person3Icon></Person3Icon> S'inscrire</Link></Nav.Link>
+                            <Nav.Link><Link to="../login" className='mt-5 px-4 py-2 rounded-pill' style={{backgroundColor: '#FF4F01', border: 'none', color: 'white'}}><LoginIcon></LoginIcon> Se connecter</Link></Nav.Link>
                         </>
                     }
                 </Nav>

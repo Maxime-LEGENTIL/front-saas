@@ -30,6 +30,10 @@ export default function Home() {
 
     const { user, token } = useAuth()
 
+    const [nbCustomers, setNbCustomers] = useState('')
+    const [nbProducts, setNbProducts] = useState('')
+    const [nbOrders, setNbOrders] = useState('')
+
 
     useEffect(() => {
         async function fetchLastOrder() {
@@ -49,7 +53,32 @@ export default function Home() {
             }
         }
 
+        async function fetchNumbers() {
+            try {
+                const config = {
+                    headers: { Authorization: `Bearer ${token}` }
+                };
+
+                const customerResponse = await axios.get('http://localhost:8000/api/customers', config);
+                setNbCustomers(customerResponse.data.length);
+
+                const productResponse = await axios.get('http://localhost:8000/api/products', config);
+                setNbProducts(productResponse.data.length);
+
+                const orderResponse = await axios.get('http://localhost:8000/api/orders', config);
+                setNbOrders(orderResponse.data.length);
+            }
+            catch(error) {
+
+            }
+            finally {
+
+            }
+
+        }
+
         fetchLastOrder();
+        fetchNumbers();
     }, []); // L'effet se déclenche une seule fois à l'initialisation du composant
 
     function formatDate(dateString) {
@@ -119,7 +148,7 @@ export default function Home() {
                             <h3 className='text-center'>Nombre de clients</h3>
                         </div>
                         <div className='pt-5'>
-                            <h3 className='text-center'>137 <MovingIcon></MovingIcon></h3>
+                            <h3 className='text-center'>{nbCustomers} <MovingIcon></MovingIcon></h3>
                         </div>
                     </Col>
 
@@ -128,7 +157,7 @@ export default function Home() {
                             <h3 className='text-center'>Nombre de produits</h3>
                         </div>
                         <div className='pt-5'>
-                            <h3 className='text-center'>850 <MovingIcon></MovingIcon></h3>
+                            <h3 className='text-center'>{nbProducts} <MovingIcon></MovingIcon></h3>
                         </div>
                     </Col>
 
@@ -137,7 +166,7 @@ export default function Home() {
                             <h3 className='text-center'>Nombre de commandes</h3>
                         </div>
                         <div className='pt-5'>
-                            <h3 className='text-center'>49 <MovingIcon></MovingIcon></h3>
+                            <h3 className='text-center'>{nbOrders} <MovingIcon></MovingIcon></h3>
                         </div>
                     </Col>
                 </Row>

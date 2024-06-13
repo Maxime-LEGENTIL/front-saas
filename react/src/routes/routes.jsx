@@ -21,6 +21,8 @@ import OrderEdit from "../components/Order/OrderEdit";
 import OrderShow from "../components/Order/OrderShow";
 import Login from "../components/Login/Login";
 import Logout from "../components/Logout/Logout";
+import Email from "../components/Email/Email";
+import Register from "../components/Register/Register";
 
 {/* Children va contenir un component : exemple <Home /> etc */}
 const PageLayout = ({ children }) => (
@@ -199,6 +201,28 @@ const router = createBrowserRouter([
             <div>
                 <PageLayout>
                     <OrderEdit />
+                </PageLayout>
+            </div>
+        ) : (
+            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
+            <Navigate to="/login" replace />
+        ),
+    },
+    {
+        path: "inscription",
+        element:
+            <div>
+                <PageLayout>
+                    <Register />
+                </PageLayout>
+            </div>
+    },
+    {
+        path: "emails/:id",
+        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
+            <div>
+                <PageLayout>
+                    <Email />
                 </PageLayout>
             </div>
         ) : (

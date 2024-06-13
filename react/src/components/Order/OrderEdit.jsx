@@ -20,7 +20,6 @@ function OrderEdit() {
     const [orderDetails, setOrderDetails] = useState({})
     const { user, token } = useAuth()
 
-
     useEffect(() => {
         async function fetchProductsAndCustomers() {
             try {
@@ -95,6 +94,9 @@ function OrderEdit() {
             } catch (error) {
                 setError('Erreur lors de la récupération des détails de la commande : ' + error.message);
                 console.error('Erreur :', error);
+            }
+            finally {
+                setIsLoading(false); // Arrêter le chargement après la récupération des donné
             }
         }
         
@@ -200,6 +202,15 @@ function OrderEdit() {
                     <hr />
                     <h1 className='pt-3 pb-3'>Modifier la commande {orderDetails.name}</h1>
                     <hr />
+
+                    {isLoading ? (
+                        <div className="text-center pt-3">
+                            <Spinner animation="border" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                            </Spinner>
+                            <p>Chargement des données en cours...</p>
+                        </div>
+                    ) : (
                     <Form onSubmit={onSubmitForm} className='pt-3'>
                         <Form.Group>
                             <Form.Label>Choisissez un client</Form.Label>
@@ -267,7 +278,8 @@ function OrderEdit() {
                             {isLoading ? 'Modification...' : 'Modifier commande'}
                         </Button>
 
-                    </Form>
+                    </Form>)}
+
                     {showSuccessMessage && <p className="mt-3 text-success">Commande mise à jour avec succès !</p>}
                     {error && <p className="mt-3 text-danger">{error}</p>}
                 </Row>
