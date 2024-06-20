@@ -19,7 +19,8 @@ const breadcrumbNameMap = {
     '/orders': 'Liste des commandes',
     '/orders/create': 'Créer une commande',
     '/orders/edit': 'Modifier une commande',
-    '/login': 'Connexion'
+    '/login': 'Connexion',
+    '/inscription': 'Inscription'
     // Ajoutez ici d'autres routes selon vos besoins
 };
 

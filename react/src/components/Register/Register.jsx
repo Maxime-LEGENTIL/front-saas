@@ -45,17 +45,17 @@ export default function Register() {
     async function onSubmitRegister(e) {
         e.preventDefault();
         try {
-            const loginResponse = await axios.post('http://localhost:8000/api/login_check', {
-                username: email,
-                password: password
+            const registerResponse = await axios.post('http://localhost:8000/users/create', {
+                email: email,
+                password: password,
+                society: society,
+                firstname: firstname,
+                lastname: lastname,
+                phoneNumber: phoneNumber
             });
 
-            const token = loginResponse.data.token;
-
-            if (token) {
-                // Call the login function with user information and token
-                login({ email }, token);
-                navigate('/');
+            if(registerResponse.status === 201) {
+                navigate('/login');
             }
         } catch (error) {
             setError("L'adresse email ou le mot de passe est incorrect.");

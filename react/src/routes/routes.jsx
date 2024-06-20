@@ -60,7 +60,9 @@ const router = createBrowserRouter([
     },
     {
         path: "login",
-        element: (
+        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
+            <Navigate to="/" replace />
+        ) : (
             <div>
                 <PageLayout>
                     <Login />

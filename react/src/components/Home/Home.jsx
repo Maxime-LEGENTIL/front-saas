@@ -143,32 +143,47 @@ export default function Home() {
                 </Row>
 
                 <Row className='mt-5' style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Col className='p-5' style={{ backgroundColor: 'white', borderRadius: '15px', marginRight: '10px' }}>
-                        <div>
-                            <h3 className='text-center'>Nombre de clients</h3>
+                    <div className="col-md-6 col-lg-4 d-flex mb-3">
+                        <div className="row bg-light rounded-3 shadow p-3 w-100 advantage-card">
+                            <div className="col-3 icon-container">
+                                <i className="fa-regular fa-paper-plane"></i>
+                            </div>
+                            <div className="col-9 text-start content-container">
+                                <div>
+                                    <h5 className='orange'>Nombre de clients</h5>
+                                    <p>Vous avez {nbCustomers} clients enregistré.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div className='pt-5'>
-                            <h3 className='text-center'>{nbCustomers} <MovingIcon></MovingIcon></h3>
-                        </div>
-                    </Col>
+                    </div>
 
-                    <Col className='p-5' style={{ backgroundColor: 'white', borderRadius: '15px', marginRight: '10px' }}>
-                        <div>
-                            <h3 className='text-center'>Nombre de produits</h3>
+                    <div className="col-md-6 col-lg-4 d-flex mb-3">
+                        <div className="row bg-light rounded-3 shadow p-3 w-100 advantage-card">
+                            <div className="col-3 icon-container">
+                                <i className="fa-regular fa-paper-plane"></i>
+                            </div>
+                            <div className="col-9 text-start content-container">
+                                <div>
+                                    <h5 className='orange'>Nombre de produits</h5>
+                                    <p>{nbProducts}</p>
+                                </div>
+                            </div>
                         </div>
-                        <div className='pt-5'>
-                            <h3 className='text-center'>{nbProducts} <MovingIcon></MovingIcon></h3>
-                        </div>
-                    </Col>
+                    </div>
 
-                    <Col className='p-5' style={{ backgroundColor: 'white', borderRadius: '15px' }}>
-                        <div>
-                            <h3 className='text-center'>Nombre de commandes</h3>
+                    <div className="col-md-6 col-lg-4 d-flex mb-3">
+                        <div className="row bg-light rounded-3 shadow p-3 w-100 advantage-card">
+                            <div className="col-3 icon-container">
+                                <i className="fa-regular fa-paper-plane"></i>
+                            </div>
+                            <div className="col-9 text-start content-container">
+                                <div>
+                                    <h5 className='orange'>Nombre de commandes</h5>
+                                    <p>{nbOrders}</p>
+                                </div>
+                            </div>
                         </div>
-                        <div className='pt-5'>
-                            <h3 className='text-center'>{nbOrders} <MovingIcon></MovingIcon></h3>
-                        </div>
-                    </Col>
+                    </div>
                 </Row>
 
             </Container>

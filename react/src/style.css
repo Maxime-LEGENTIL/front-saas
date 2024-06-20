@@ -24,11 +24,19 @@ h6 a {
     text-decoration: none;
 }
 
-/*.dark-theme {
-    background-color: rgb(36, 36, 36);
-    color: white;
+/* Home */
+.icon-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.dark-theme h3 {
-    color: black;
-}*/
+.content-container {
+    display: flex;
+    align-items: center;
+}
+
+.icon-container i {
+    font-size: 3rem; /* Adjust the size as needed */
+}

@@ -221,8 +221,8 @@ function CustomerCreate() {
                             </Form.Control.Feedback>
                         </Form.Group>
 
-                        <Button onClick={handleShow} className='mt-5' variant="success">
-                            Créer client
+                        <Button onClick={handleShow} className='mt-5' variant="success" style={{backgroundColor: '#FF4F01', border: 'none', color: 'white'}}>
+                            Créer le client
                         </Button>
                     </Form>
                 </Row>

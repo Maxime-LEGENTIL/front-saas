@@ -48,6 +48,14 @@ function CustomerList() {
         (customer.address && customer.address.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
     return (
         <div>
             <Container>
@@ -76,22 +84,26 @@ function CustomerList() {
                                     <th>Modifier</th>
                                     <th>ID</th>
                                     <th>Prénom</th>
-                                    <th>Nom de famille</th>
+                                    <th>Nom</th>
                                     <th>Email</th>
-                                    <th>Numéro de téléphone</th>
+                                    <th>Téléphone</th>
                                     <th>Adresse</th>
+                                    <th>Date de création</th>
+                                    <th>Date de mise à jour</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {filteredCustomers.map(customer => (
                                     <tr key={customer.id}>
-                                        <td><Link to={`../customers/edit/${customer.id}`}><Button variant="warning">Modifier</Button></Link></td>
+                                        <td><Link to={`../customers/edit/${customer.id}`}><Button variant="warning" style={{backgroundColor: '#FF4F01', border: 'none', color: 'white'}}>Modifier</Button></Link></td>
                                         <td>{customer.id}</td>
                                         <td>{customer.firstname}</td>
                                         <td>{customer.lastname}</td>
                                         <td>{customer.email}</td>
                                         <td>{customer.phonenumber}</td>
                                         <td>{customer.address}</td>
+                                        <td>{formatDate(customer.createdAt)}</td>
+                                        <td>{customer.updatedAt ? formatDate(customer.createdAt) : '-'}</td>
                                     </tr>
                                 ))}
                             </tbody>
