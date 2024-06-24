@@ -1,8 +1,8 @@
-// React Router
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // React UI
-import { Container, Row } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 // Components
 import Header from "../components/Menu/Header";
@@ -23,46 +23,49 @@ import Login from "../components/Login/Login";
 import Logout from "../components/Logout/Logout";
 import Email from "../components/Email/Email";
 import Register from "../components/Register/Register";
+//import ProtectedRoute from "../components/ProtectedRoute";
 
-{/* Children va contenir un component : exemple <Home /> etc */}
+const ProtectedRoute = ({ children }) => {
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+    return isAuthenticated ? children : <Navigate to="/login" replace />;
+};
+
 const PageLayout = ({ children }) => (
     <div className="dark-theme">
         <Header />
-            <Container className='mt-5 p-2'>
-                <BreadcrumbAndVersionCRM />
-            </Container>
-            {children}
+        <Container className='mt-5 p-2'>
+            <BreadcrumbAndVersionCRM />
+        </Container>
+        {children}
         <Footer />
     </div>
 );
 
-const isAuthenticated = () => {
-    // Vérifiez si l'utilisateur est connecté en fonction de votre logique d'authentification
-    // Par exemple, vérifiez si un jeton d'authentification est présent dans le stockage local ou dans un état global
-    const token = localStorage.getItem('token');
-    return token !== null; // Retourne vrai si l'utilisateur est connecté, sinon faux
-};
-
-
 const router = createBrowserRouter([
     {
         path: "/",
-        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
-            <div>
+        element: (
+            <ProtectedRoute>
                 <PageLayout>
                     <Home />
                 </PageLayout>
-            </div>
-        ) : (
-            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-            <Navigate to="/login" replace />
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: "/dashboard",
+        element: (
+            <ProtectedRoute>
+                <PageLayout>
+                    <Home />
+                </PageLayout>
+            </ProtectedRoute>
         ),
     },
     {
         path: "login",
-        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
-            <Navigate to="/" replace />
-        ) : (
+        element: (
             <div>
                 <PageLayout>
                     <Login />
@@ -82,154 +85,122 @@ const router = createBrowserRouter([
     },
     {
         path: "products",
-        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
-            <div>
+        element: (
+            <ProtectedRoute>
                 <PageLayout>
                     <ProductList />
                 </PageLayout>
-            </div>
-        ) : (
-            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-            <Navigate to="/login" replace />
+            </ProtectedRoute>
         ),
     },
     {
         path: "products/create",
-        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
-            <div>
+        element: (
+            <ProtectedRoute>
                 <PageLayout>
                     <ProductCreate />
                 </PageLayout>
-            </div>
-        ) : (
-            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-            <Navigate to="/login" replace />
+            </ProtectedRoute>
         ),
     },
     {
         path: "products/edit/:id",
-        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
-            <div>
+        element: (
+            <ProtectedRoute>
                 <PageLayout>
                     <ProductEdit />
                 </PageLayout>
-            </div>
-        ) : (
-            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-            <Navigate to="/login" replace />
+            </ProtectedRoute>
         ),
     },
     {
         path: "customers",
-        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
-            <div>
+        element: (
+            <ProtectedRoute>
                 <PageLayout>
                     <CustomerList />
                 </PageLayout>
-            </div>
-        ) : (
-            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-            <Navigate to="/login" replace />
+            </ProtectedRoute>
         ),
     },
     {
         path: "customers/create",
-        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
-            <div>
+        element: (
+            <ProtectedRoute>
                 <PageLayout>
                     <CustomerCreate />
                 </PageLayout>
-            </div>
-        ) : (
-            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-            <Navigate to="/login" replace />
+            </ProtectedRoute>
         ),
     },
     {
         path: "customers/edit/:id",
-        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
-            <div>
+        element: (
+            <ProtectedRoute>
                 <PageLayout>
                     <CustomerEdit />
                 </PageLayout>
-            </div>
-        ) : (
-            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-            <Navigate to="/login" replace />
+            </ProtectedRoute>
         ),
     },
     {
         path: "orders",
-        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
-            <div>
+        element: (
+            <ProtectedRoute>
                 <PageLayout>
                     <OrderList />
                 </PageLayout>
-            </div>
-        ) : (
-            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-            <Navigate to="/login" replace />
+            </ProtectedRoute>
         ),
     },
     {
         path: "orders/id",
-        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
-            <div>
+        element: (
+            <ProtectedRoute>
                 <PageLayout>
                     <OrderShow />
                 </PageLayout>
-            </div>
-        ) : (
-            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-            <Navigate to="/login" replace />
+            </ProtectedRoute>
         ),
     },
     {
         path: "orders/create",
-        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
-            <div>
+        element: (
+            <ProtectedRoute>
                 <PageLayout>
                     <OrderCreate />
                 </PageLayout>
-            </div>
-        ) : (
-            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-            <Navigate to="/login" replace />
+            </ProtectedRoute>
         ),
     },
     {
         path: "orders/edit/:id",
-        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
-            <div>
+        element: (
+            <ProtectedRoute>
                 <PageLayout>
                     <OrderEdit />
                 </PageLayout>
-            </div>
-        ) : (
-            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-            <Navigate to="/login" replace />
+            </ProtectedRoute>
         ),
     },
     {
         path: "inscription",
-        element:
+        element: (
             <div>
                 <PageLayout>
                     <Register />
                 </PageLayout>
             </div>
+        ),
     },
     {
         path: "emails/:id",
-        element: isAuthenticated() ? ( // Vérifiez si l'utilisateur est connecté
-            <div>
+        element: (
+            <ProtectedRoute>
                 <PageLayout>
                     <Email />
                 </PageLayout>
-            </div>
-        ) : (
-            // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
-            <Navigate to="/login" replace />
+            </ProtectedRoute>
         ),
     },
 ]);

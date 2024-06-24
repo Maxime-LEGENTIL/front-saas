@@ -14,7 +14,7 @@ export default function Register() {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [error, setError] = useState('');
 
-    const { login } = useAuth();  // Access the login function via context
+    //const { login } = useAuth();  // Access the login function via context
 
     const navigate = useNavigate();
 

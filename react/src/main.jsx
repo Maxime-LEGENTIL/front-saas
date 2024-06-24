@@ -1,22 +1,21 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import { RouterProvider } from 'react-router-dom';
+
+import store from './redux/store/store.js'; // Importer le store Redux
 
 // Routes 
 import routes from './routes/routes.jsx';
-import { RouterProvider } from 'react-router-dom';
 
 // CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './style.css'
-
-// Auth 
-import Auth from './services/Auth.jsx';
+import './style.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
-        <Auth>
-            <RouterProvider router={routes} />
-            {/*<App />*/}
-        </Auth>
-    </React.StrictMode>,
-)
+  <React.StrictMode>
+    <Provider store={store}>
+      <RouterProvider router={routes} />
+    </Provider>
+  </React.StrictMode>
+);

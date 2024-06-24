@@ -20,6 +20,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios'
 import OrderPDF from '../Order/OrderPDF';
 
+//import { login, logout } from '../../authActions';
+import { useSelector } from 'react-redux';
+
 export default function Home() {
 
     const navigate = useNavigate();
@@ -28,7 +31,8 @@ export default function Home() {
     const [lastOrder, setLastOrder] = useState('');
     const [error, setError] = useState({})
 
-    const { user, token } = useAuth()
+    //const { user, token } = useAuth()
+    const { token, isAuthenticated } = useSelector(state => state.auth);
 
     const [nbCustomers, setNbCustomers] = useState('')
     const [nbProducts, setNbProducts] = useState('')
