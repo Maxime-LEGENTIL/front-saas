@@ -3,7 +3,9 @@ import { Container, Row, Col, Spinner, Form, Alert } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useAuth } from '../../services/Auth';
+//import { useAuth } from '../../services/Auth';
+import { useSelector } from 'react-redux';
+
 
 function ProductEdit() {
     const { id } = useParams();
@@ -16,7 +18,9 @@ function ProductEdit() {
     const [isLoading, setIsLoading] = useState(true);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-    const { token } = useAuth()
+    //const { token } = useAuth()
+    const { token, isAuthenticated } = useSelector(state => state.auth);
+
 
     useEffect(() => {
         async function fetchProduct() {

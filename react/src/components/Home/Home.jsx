@@ -107,7 +107,7 @@ export default function Home() {
                         <div className='pt-3' style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
                             <RapidMenu text={'Créer commande'} />
                             <RapidMenu text={'Modifier commande'} />
-                            <RapidMenu text={'###'} />
+                            <RapidMenu text={'Créer un ticket'} />
                             <RapidMenu text={'###'} />
                         </div>
                     </Col>
@@ -169,7 +169,7 @@ export default function Home() {
                             <div className="col-9 text-start content-container">
                                 <div>
                                     <h5 className='orange'>Nombre de produits</h5>
-                                    <p>{nbProducts}</p>
+                                    <p>Vous avez {nbProducts} produits enregistré.</p>
                                 </div>
                             </div>
                         </div>
@@ -183,7 +183,7 @@ export default function Home() {
                             <div className="col-9 text-start content-container">
                                 <div>
                                     <h5 className='orange'>Nombre de commandes</h5>
-                                    <p>{nbOrders}</p>
+                                    <p>Vous avez {nbOrders} commandes en cours.</p>
                                 </div>
                             </div>
                         </div>

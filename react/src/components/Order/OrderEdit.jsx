@@ -4,7 +4,8 @@ import axios from 'axios';
 import Select from 'react-select';
 import { useParams } from 'react-router-dom';
 import OrderPDF from './OrderPDF';
-import { useAuth } from '../../services/Auth';
+import { useSelector } from 'react-redux';
+
 
 function OrderEdit() {
     const [customers, setCustomers] = useState([]);
@@ -18,7 +19,9 @@ function OrderEdit() {
     const [orderName, setOrderName] = useState('')
     const [customerDetails, setCustomerDetails] = useState({});
     const [orderDetails, setOrderDetails] = useState({})
-    const { user, token } = useAuth()
+    //const { user, token } = useAuth()
+    const { token, isAuthenticated } = useSelector(state => state.auth);
+
 
     useEffect(() => {
         async function fetchProductsAndCustomers() {

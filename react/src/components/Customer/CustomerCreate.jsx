@@ -1,20 +1,37 @@
-import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
+// React
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+// Axios :
 import axios from 'axios';
 
-import { useAuth } from '../../services/Auth';
+// Redux :
+import { useSelector } from 'react-redux';
 
+// URL Api :
+import API_URL from '../../services/api';
+
+// Bootstrap :
+import { Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
+
+// CSS :
+import './CustomerCreate.css';
+
+// Méthode
 function CustomerCreate() {
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [email, setEmail] = useState('');
     const [phonenumber, setPhonenumber] = useState('');
     const [address, setAddress] = useState('');
+    const [country, setCountry] = useState('');
+    const [postalcode, setPostalcode] = useState('');
+    const [city, setCity] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    const { token, isAuthenticated } = useSelector(state => state.auth);
 
     const handleClose = () => setShowModal(false);
     const handleShow = (e) => {
@@ -23,9 +40,6 @@ function CustomerCreate() {
             setShowModal(true);
         }
     };
-
-    const { user, token } = useAuth()
-
 
     function validateForm() {
         const newErrors = {};
@@ -42,6 +56,9 @@ function CustomerCreate() {
             newErrors.phonenumber = "Le numéro de téléphone est invalide";
         }
         if (!address) newErrors.address = "L'adresse est requise";
+        if (!country) newErrors.country = "Le pays est requis";
+        if (!postalcode) newErrors.postalcode = "Le code postal est requis";
+        if (!city) newErrors.city = "La ville est requise";
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -57,17 +74,20 @@ function CustomerCreate() {
                 headers: { Authorization: `Bearer ${token}` }
             };
 
-            const customerResponse = await axios.post('http://localhost:8000/api/customers', {
+            const customerResponse = await axios.post(API_URL + 'customers', {
                 firstname: firstname,
                 lastname: lastname,
                 email: email,
                 phonenumber: phonenumber,
-                address: address
+                address: address,
+                zipcode: postalcode,
+                city: city,
+                country: country
             }, config);
 
-            handleClose();
+            console.log(customerResponse)
+            //handleClose();
 
-            //console.log(customerResponse.data);
             const customerId = customerResponse.data.customer.id;
             navigate(`/customers/edit/${customerId}`);
         } catch (error) {
@@ -77,52 +97,11 @@ function CustomerCreate() {
         }
     }
 
-    function onChangeFirstname(e) {
-        setFirstname(e.target.value);
-        if (e.target.value) {
-            setErrors(prevErrors => ({ ...prevErrors, firstname: null }));
-        } else {
-            setErrors(prevErrors => ({ ...prevErrors, firstname: "Le prénom est requis" }));
-        }
-    }
-
-    function onChangeLastname(e) {
-        setLastname(e.target.value);
-        if (e.target.value) {
-            setErrors(prevErrors => ({ ...prevErrors, lastname: null }));
-        } else {
-            setErrors(prevErrors => ({ ...prevErrors, lastname: "Le nom de famille est requis" }));
-        }
-    }
-
-    function onChangeEmail(e) {
-        setEmail(e.target.value);
-        if (!e.target.value) {
-            setErrors(prevErrors => ({ ...prevErrors, email: "L'email est requis" }));
-        } else if (!/\S+@\S+\.\S+/.test(e.target.value)) {
-            setErrors(prevErrors => ({ ...prevErrors, email: "L'email est invalide" }));
-        } else {
-            setErrors(prevErrors => ({ ...prevErrors, email: null }));
-        }
-    }
-
-    function onChangePhonenumber(e) {
-        setPhonenumber(e.target.value);
-        if (!e.target.value) {
-            setErrors(prevErrors => ({ ...prevErrors, phonenumber: "Le numéro de téléphone est requis" }));
-        } else if (!/^\d{10}$/.test(e.target.value)) {
-            setErrors(prevErrors => ({ ...prevErrors, phonenumber: "Le numéro de téléphone est invalide" }));
-        } else {
-            setErrors(prevErrors => ({ ...prevErrors, phonenumber: null }));
-        }
-    }
-
-    function onChangeAddress(e) {
-        setAddress(e.target.value);
-        if (e.target.value) {
-            setErrors(prevErrors => ({ ...prevErrors, address: null }));
-        } else {
-            setErrors(prevErrors => ({ ...prevErrors, address: "L'adresse est requise" }));
+    function onChange(e, setState, errorKey, validationFunc) {
+        setState(e.target.value);
+        if (validationFunc) {
+            const error = validationFunc(e.target.value);
+            setErrors(prevErrors => ({ ...prevErrors, [errorKey]: error }));
         }
     }
 
@@ -137,7 +116,7 @@ function CustomerCreate() {
                     <p><strong>Nom de famille:</strong> {lastname}</p>
                     <p><strong>Email:</strong> {email}</p>
                     <p><strong>Numéro de téléphone:</strong> {phonenumber}</p>
-                    <p><strong>Adresse:</strong> {address}</p>
+                    <p><strong>Adresse:</strong> {address}, {postalcode} {city}, {country}</p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
@@ -159,7 +138,7 @@ function CustomerCreate() {
                             <Form.Group as={Col} controlId="formFirstname">
                                 <Form.Label>Prénom du client</Form.Label>
                                 <Form.Control
-                                    onChange={onChangeFirstname}
+                                    onChange={(e) => onChange(e, setFirstname, 'firstname', (value) => !value ? "Le prénom est requis" : null)}
                                     placeholder="Jacques"
                                     isInvalid={!!errors.firstname}
                                 />
@@ -171,7 +150,7 @@ function CustomerCreate() {
                             <Form.Group as={Col} controlId="formLastname">
                                 <Form.Label>Nom de famille du client</Form.Label>
                                 <Form.Control
-                                    onChange={onChangeLastname}
+                                    onChange={(e) => onChange(e, setLastname, 'lastname', (value) => !value ? "Le nom de famille est requis" : null)}
                                     placeholder="Dupont"
                                     isInvalid={!!errors.lastname}
                                 />
@@ -181,17 +160,57 @@ function CustomerCreate() {
                             </Form.Group>
                         </Row>
 
-                        <Form.Group className='pt-3' controlId="formAddress">
-                            <Form.Label>Adresse du client</Form.Label>
-                            <Form.Control
-                                onChange={onChangeAddress}
-                                placeholder="5 Impasse des mouettes 17290 Aigrefeuille d'Aunis"
-                                isInvalid={!!errors.address}
-                            />
-                            <Form.Control.Feedback type="invalid">
-                                {errors.address}
-                            </Form.Control.Feedback>
-                        </Form.Group>
+                        <Row>
+                            <Form.Group as={Col} className='pt-3' controlId="formAddress">
+                                <Form.Label>Adresse du client</Form.Label>
+                                <Form.Control
+                                    onChange={(e) => onChange(e, setAddress, 'address', (value) => !value ? "L'adresse est requise" : null)}
+                                    placeholder="5 Impasse des mouettes"
+                                    isInvalid={!!errors.address}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.address}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+
+                            <Form.Group as={Col} className='pt-3' controlId="formCountry">
+                                <Form.Label>Pays du client</Form.Label>
+                                <Form.Control
+                                    onChange={(e) => onChange(e, setCountry, 'country', (value) => !value ? "Le pays est requis" : null)}
+                                    placeholder="France"
+                                    isInvalid={!!errors.country}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.country}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                        </Row>
+
+                        <Row>
+                            <Form.Group as={Col} className='pt-3' controlId="formPostalcode">
+                                <Form.Label>Code postal</Form.Label>
+                                <Form.Control
+                                    onChange={(e) => onChange(e, setPostalcode, 'postalcode', (value) => !value ? "Le code postal est requis" : null)}
+                                    placeholder="75001"
+                                    isInvalid={!!errors.postalcode}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.postalcode}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+
+                            <Form.Group as={Col} className='pt-3' controlId="formCity">
+                                <Form.Label>Ville</Form.Label>
+                                <Form.Control
+                                    onChange={(e) => onChange(e, setCity, 'city', (value) => !value ? "La ville est requise" : null)}
+                                    placeholder="Paris"
+                                    isInvalid={!!errors.city}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.city}
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                        </Row>
 
                         <h4 className='pt-5'>Informations de contact</h4>
 
@@ -199,7 +218,11 @@ function CustomerCreate() {
                             <Form.Label>Email du client</Form.Label>
                             <Form.Control
                                 type="email"
-                                onChange={onChangeEmail}
+                                onChange={(e) => onChange(e, setEmail, 'email', (value) => {
+                                    if (!value) return "L'email est requis";
+                                    if (!/\S+@\S+\.\S+/.test(value)) return "L'email est invalide";
+                                    return null;
+                                })}
                                 placeholder="jacques.dupont@gmail.com"
                                 isInvalid={!!errors.email}
                             />
@@ -212,7 +235,11 @@ function CustomerCreate() {
                             <Form.Label>Numéro de téléphone du client</Form.Label>
                             <Form.Control
                                 type="text"
-                                onChange={onChangePhonenumber}
+                                onChange={(e) => onChange(e, setPhonenumber, 'phonenumber', (value) => {
+                                    if (!value) return "Le numéro de téléphone est requis";
+                                    if (!/^\d{10}$/.test(value)) return "Le numéro de téléphone est invalide";
+                                    return null;
+                                })}
                                 placeholder="0600000000"
                                 isInvalid={!!errors.phonenumber}
                             />
@@ -221,7 +248,7 @@ function CustomerCreate() {
                             </Form.Control.Feedback>
                         </Form.Group>
 
-                        <Button onClick={handleShow} className='mt-5' variant="success" style={{backgroundColor: '#FF4F01', border: 'none', color: 'white'}}>
+                        <Button onClick={handleShow} className='mt-5 btn-create-customer' variant="success" style={{ backgroundColor: '#FF4F01', border: 'none', color: 'white' }}>
                             Créer le client
                         </Button>
                     </Form>

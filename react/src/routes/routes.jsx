@@ -23,6 +23,7 @@ import Login from "../components/Login/Login";
 import Logout from "../components/Logout/Logout";
 import Email from "../components/Email/Email";
 import Register from "../components/Register/Register";
+import TicketCreate from "../components/Ticket/TicketCreate";
 //import ProtectedRoute from "../components/ProtectedRoute";
 
 const ProtectedRoute = ({ children }) => {
@@ -191,6 +192,16 @@ const router = createBrowserRouter([
                     <Register />
                 </PageLayout>
             </div>
+        ),
+    },
+    {
+        path: "tickets/create",
+        element: (
+            <ProtectedRoute>
+                <PageLayout>
+                    <TicketCreate />
+                </PageLayout>
+            </ProtectedRoute>
         ),
     },
     {

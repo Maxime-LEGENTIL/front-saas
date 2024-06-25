@@ -3,6 +3,7 @@ import { Container, Row, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import Select from 'react-select';
 import { useAuth } from '../../services/Auth';
+import { useSelector } from 'react-redux';
 
 function OrderCreate() {
     const [customers, setCustomers] = useState([]);
@@ -14,7 +15,8 @@ function OrderCreate() {
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [orderName, setOrderName] = useState('');
 
-    const { user, token } = useAuth()
+    //const { user, token } = useAuth()
+    const { token, isAuthenticated } = useSelector(state => state.auth);
 
     useEffect(() => {
         async function fetchProductsAndCustomers() {

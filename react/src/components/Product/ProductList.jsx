@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Table, Form, Button, Container, Row, Spinner } from 'react-bootstrap'; // Utilisation directe des composants de React-Bootstrap
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../../services/Auth';
+//import { useAuth } from '../../services/Auth';
+import { useSelector } from 'react-redux';
+
 
 function ProductList() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -10,7 +12,9 @@ function ProductList() {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    const { token } = useAuth()
+    //const { token } = useAuth()
+    const { token, isAuthenticated } = useSelector(state => state.auth);
+
 
     useEffect(() => {
         async function fetchProducts() {

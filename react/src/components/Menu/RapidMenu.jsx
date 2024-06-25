@@ -32,6 +32,8 @@ function RapidMenu({ text }) {
                 return <ShoppingCartOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
             case "Modifier commande":
                 return <MuseumOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
+            case "Créer un ticket":
+                return <MuseumOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
             default:
                 return <PersonAddOutlinedIcon style={{ color: 'orange', fontSize: '2rem' }} />;
         }
@@ -51,6 +53,8 @@ function RapidMenu({ text }) {
                 return "/orders/create";
             case "Modifier commande":
                 return "/orders";
+            case "Créer un ticket":
+                return "/tickets/create";
             default:
                 return "/";
         }

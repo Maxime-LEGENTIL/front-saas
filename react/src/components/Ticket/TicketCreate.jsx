@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 
-function ProductCreate() {
+function TicketCreate() {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [showModal, setShowModal] = useState(false);
@@ -104,49 +104,28 @@ function ProductCreate() {
             <Container>
                 <Row>
                     <hr />
-                    <h1 className='pt-3 pb-3'>Créer un nouveau produit</h1>
+                    <h1 className='pt-3 pb-3'>Créer un nouveau ticket</h1>
                     {serverError && <Alert variant="danger">{serverError}</Alert>}
                     <Form>
-                        <Row>
-                            <h4 className='pb-3'>Informations essentielles</h4>
-                            <Form.Group as={Col} controlId="formName">
-                                <Form.Label>Nom du produit</Form.Label>
-                                <Form.Control
-                                    onChange={onChangeName}
-                                    placeholder="Huile moteur 20L"
-                                    isInvalid={!!errors.name}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    {errors.name}
-                                </Form.Control.Feedback>
-                            </Form.Group>
-
-                            <Form.Group as={Col} controlId="formPrice">
-                                <Form.Label>Prix du produit (exprimé en €)</Form.Label>
-                                <Form.Control
-                                    type="number"
-                                    onChange={onChangePrice}
-                                    placeholder="119"
-                                    isInvalid={!!errors.price}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    {errors.price}
-                                </Form.Control.Feedback>
-                            </Form.Group>
-                        </Row>
-
-                        <h4 className='pt-5 pb-3'>Informations complémentaires (v2)</h4>
+                        <h4 className='pb-3'>Objet de la demande</h4>
 
                         <Form.Group controlId="formName">
-                            <Form.Label>Description du produit</Form.Label>
+                            <Form.Label>Objet de la demande</Form.Label>
+                            <Form.Control 
+                                placeholder="Objet de la demande"
+                            />
+                        </Form.Group>
+
+                        <Form.Group className='pt-3' controlId="formName">
+                            <Form.Label>Votre message</Form.Label>
                             <Form.Control 
                                 as="textarea"
-                                placeholder="Description du produit"
+                                placeholder="Description de votre demande"
                             />
                         </Form.Group>
 
                         <Button onClick={handleShow} className='mt-5' variant="success">
-                            Créer produit
+                            Créer le ticket
                         </Button>
                     </Form>
                 </Row>
@@ -155,4 +134,4 @@ function ProductCreate() {
     );
 }
 
-export default ProductCreate;
+export default TicketCreate;

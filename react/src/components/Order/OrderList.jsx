@@ -5,7 +5,8 @@ import Button from 'react-bootstrap/Button';
 import { Container, Row, Spinner } from 'react-bootstrap'; // Importer Spinner
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useAuth } from '../../services/Auth';
+
+import { useSelector } from 'react-redux';
 
 function OrderList() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -13,7 +14,9 @@ function OrderList() {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true); // État pour le chargement
 
-    const { user, token } = useAuth()
+    //const { user, token } = useAuth()
+    const { token, isAuthenticated } = useSelector(state => state.auth);
+
 
     useEffect(() => {
         async function fetchOrders() {
@@ -23,6 +26,7 @@ function OrderList() {
                 };
 
                 const orderResponse = await axios.get('http://localhost:8000/api/orders', config);
+                console.log(orderResponse)
 
                 setOrders(orderResponse.data);
             } catch (error) {
